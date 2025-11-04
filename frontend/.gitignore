@@ -1,36 +1,74 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# ----------------------------
+# Node / Next.js (frontend)
+# ----------------------------
+node_modules/
+.next/
+.next/cache/
+out/
+dist/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# local env files
-.env*.local
-.env
-
-# vercel
-.vercel
-
-# typescript
+pnpm-debug.log*
 *.tsbuildinfo
-next-env.d.ts
+
+# If you build static export
+# out/
+
+# ----------------------------
+# Python (backend)
+# ----------------------------
+backend/.venv/
+backend/__pycache__/
+backend/**/*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+coverage/
+
+# ----------------------------
+# App runtime data (DON'T version trained data/models)
+# ----------------------------
+backend/data/dataset/
+backend/data/model/
+backend/data/*.db
+backend/data/*.sqlite
+backend/data/*.log
+
+# keep empty folders with .gitkeep if you want the dirs present
+!backend/data/.gitkeep
+!backend/data/dataset/.gitkeep
+!backend/data/model/.gitkeep
+
+# ----------------------------
+# Environment / secrets
+# ----------------------------
+.env
+.env.*
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+frontend/.env.local
+
+# If settings.json contains secrets, ignore it; otherwise you may commit it.
+# Uncomment the next line if it has secrets:
+# backend/settings.json
+
+# ----------------------------
+# Editor / OS noise
+# ----------------------------
+.vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*
+
+# ----------------------------
+# Docker (optional)
+# ----------------------------
+*.pid
