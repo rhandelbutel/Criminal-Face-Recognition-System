@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  backend:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app/backend
+    command: bash -lc "pip install -r backend/requirements.txt && uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app/frontend
+    command: sh -lc "cd frontend && npm i && npm run dev"
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE=http://backend:8000
+    depends_on:
+      - backend
+
+
