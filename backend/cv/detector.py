@@ -22,3 +22,4 @@ def detect_faces(gray_image) -> List[Tuple[int, int, int, int]]:
     return [(int(x), int(y), int(w), int(h)) for (x, y, w, h) in faces]
 
 
+

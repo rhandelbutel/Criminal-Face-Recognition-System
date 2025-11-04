@@ -1,0 +1,18 @@
+# Normalize to LF in the repo; Windows will check out as CRLF if configured
+* text=auto eol=lf
+
+# Explicit LF for source files
+*.js   text eol=lf
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.jsx  text eol=lf
+*.json text eol=lf
+*.css  text eol=lf
+*.md   text eol=lf
+*.py   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# Explicit CRLF for Windows scripts if you have any
+*.bat  text eol=crlf
+*.cmd  text eol=crlf

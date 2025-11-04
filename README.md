@@ -51,7 +51,7 @@ cd backend
 python -m venv .venv
 .venv\\Scripts\\activate
 pip install -r requirements.txt
-uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000 or py -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 - API base: `http://localhost:8000`
@@ -114,5 +114,6 @@ docker compose up
 ```
 
 See `docker-compose.yml` for details.
+
 
 

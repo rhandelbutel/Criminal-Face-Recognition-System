@@ -76,38 +76,38 @@ export default function TrainPage() {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <div className="card">
-        <div className="font-medium mb-3">Upload Photos & Train</div>
+        <div className="font-medium mb-3 text-lg">Upload Photos & Train</div>
         <form onSubmit={onSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm mb-1">Name / Label</label>
+            <label className="label">Name / Label</label>
             <input className="input" value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Juan_Dela_Cruz" />
           </div>
           <div>
-            <label className="block text-sm mb-1">Title / Case (optional)</label>
+            <label className="label">Title / Case (optional)</label>
             <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Criminal Case Found - Murder" />
           </div>
           <div>
-            <label className="block text-sm mb-1">Images (1–20)</label>
-            <input type="file" accept="image/*" multiple onChange={(e) => setFiles(e.target.files)} />
+            <label className="label">Images (1–20)</label>
+            <input className="block" type="file" accept="image/*" multiple onChange={(e) => setFiles(e.target.files)} />
           </div>
           <div className="flex gap-2">
             <button className="btn" disabled={busy} type="submit">Upload & Train</button>
-            <button className="btn" disabled={busy} type="button" onClick={retrain}>Retrain</button>
+            <button className="btn-outline" disabled={busy} type="button" onClick={retrain}>Retrain</button>
           </div>
         </form>
         {message && <div className="mt-3 text-sm text-gray-600">{message}</div>}
       </div>
       <div className="card">
-        <div className="font-medium mb-3">Dataset</div>
+        <div className="font-medium mb-3 text-lg">Dataset</div>
         <ul className="space-y-2">
           {Object.keys(labels).length === 0 && <li className="text-gray-500">No labels yet</li>}
           {Object.entries(labels).map(([k, v]) => (
-            <li key={k} className="flex items-center justify-between">
+            <li key={k} className="flex items-center justify-between rounded-lg border border-gray-200 p-3">
               <div>
                 <div className="font-medium">{k}</div>
                 <div className="text-sm text-gray-600">{v} images</div>
               </div>
-              <button className="btn" disabled={busy} onClick={() => deleteLabel(k)}>Delete</button>
+              <button className="btn-outline" disabled={busy} onClick={() => deleteLabel(k)}>Delete</button>
             </li>
           ))}
         </ul>

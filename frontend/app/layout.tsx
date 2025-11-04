@@ -1,23 +1,25 @@
 import "../styles/globals.css";
 import React from "react";
+import { Inter } from "next/font/google";
+import { Nav } from "../components/Nav";
 
 export const metadata = {
   title: "Criminal Face Recognition",
   description: "LBPH-based face recognition demo",
 };
 
+const inter = Inter({ subsets: ["latin"] });
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-gray-50 text-gray-900">
-        <div className="max-w-5xl mx-auto p-4">
-          <header className="mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-semibold">Criminal Face Recognition</h1>
-            <nav className="flex gap-4 text-sm">
-              <a className="hover:underline" href="/">Dashboard</a>
-              <a className="hover:underline" href="/train">Train</a>
-              <a className="hover:underline" href="/recognize">Recognize</a>
-            </nav>
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-white text-gray-900`}> 
+        <div className="mx-auto max-w-6xl p-4 md:p-6">
+          <header className="mb-6 md:mb-8 flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Criminal Face Recognition</h1>
+            </div>
+            <Nav />
           </header>
           {children}
         </div>
@@ -25,5 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
 
 

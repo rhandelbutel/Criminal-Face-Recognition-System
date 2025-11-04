@@ -4,8 +4,8 @@ from fastapi.responses import JSONResponse
 from typing import List, Optional
 import uvicorn
 
-from .cv.io_utils import decode_data_url_to_image
-from .cv.recognizer import FaceRecognizerService
+from cv.io_utils import decode_data_url_to_image
+from cv.recognizer import FaceRecognizerService
 
 
 app = FastAPI(title="Criminal Face Recognition API", version="0.1.0")

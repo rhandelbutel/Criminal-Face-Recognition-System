@@ -46,8 +46,8 @@ export default function RecognizePage() {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <div className="card">
-        <div className="font-medium mb-2">Upload Image</div>
-        <input type="file" accept="image/*" onChange={onFile} />
+        <div className="font-medium mb-2 text-lg">Upload Image</div>
+        <input className="block" type="file" accept="image/*" onChange={onFile} />
         <div className="mt-3">
           {preview ? (
             <canvas ref={canvasRef} className="max-w-full" />
@@ -57,7 +57,7 @@ export default function RecognizePage() {
         </div>
       </div>
       <div className="card">
-        <div className="font-medium mb-2">Result</div>
+        <div className="font-medium mb-2 text-lg">Result</div>
         {result ? (
           <div>
             <div className="text-xl font-semibold">{result.label}</div>

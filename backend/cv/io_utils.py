@@ -43,3 +43,4 @@ def resize_image(image: np.ndarray, size: Tuple[int, int]) -> np.ndarray:
     return cv2.resize(image, size)
 
 
+

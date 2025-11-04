@@ -1,6 +1,7 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { apiPost } from "../lib/api";
+import { PlayCircleIcon, StopCircleIcon } from "@heroicons/react/24/solid";
 
 type InferResult = {
   label: string;
@@ -85,20 +86,24 @@ export function WebcamBox({ onResult }: { onResult: (r: InferResult | null) => v
 
   return (
     <div className="card">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="font-medium">Webcam</div>
+      <div className="mb-3 flex items-center justify-between">
+        <div>
+          <div className="font-medium">Webcam</div>
+          <div className="text-xs text-gray-500">Sends a frame every ~500ms</div>
+        </div>
         {!running ? (
-          <button className="btn" onClick={start}>Start Recognition</button>
+          <button className="btn" onClick={start}><PlayCircleIcon className="w-5 h-5" /> Start</button>
         ) : (
-          <button className="btn" onClick={stop}>Stop</button>
+          <button className="btn-outline" onClick={stop}><StopCircleIcon className="w-5 h-5" /> Stop</button>
         )}
       </div>
-      <div className="relative">
-        <video ref={videoRef} className="w-full rounded" muted playsInline />
+      <div className="relative overflow-hidden rounded-lg">
+        <video ref={videoRef} className="w-full" muted playsInline />
         <canvas ref={canvasRef} className="w-full absolute inset-0 pointer-events-none" />
       </div>
     </div>
   );
 }
+
 
 
