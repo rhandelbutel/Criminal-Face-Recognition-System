@@ -5,8 +5,17 @@ import { ShieldCheckIcon, ExclamationTriangleIcon } from "@heroicons/react/24/ou
 type Result = {
   label: string;
   confidence: number | null;
+  score?: number | null; // 0..1 where higher is better
   bbox?: number[] | null;
-  title?: string | null;
+  title?: string | null; // backward compat
+  metadata?: {
+    title?: string | null;
+    case?: string | null;
+    sex?: string | null;
+    age?: string | number | null;
+    address?: string | null;
+    notes?: string | null;
+  } | null;
 };
 
 export function ResultCard({ result }: { result: Result | null }) {
@@ -19,6 +28,13 @@ export function ResultCard({ result }: { result: Result | null }) {
     );
   }
   const unknown = result.label === "Unknown";
+  const title = result.metadata?.title ?? result.title ?? null;
+  const caseInfo = result.metadata?.case ?? null;
+  const sex = result.metadata?.sex ?? null;
+  const age = result.metadata?.age ?? null;
+  const address = result.metadata?.address ?? null;
+  const notes = result.metadata?.notes ?? null;
+  const scorePct = typeof result.score === "number" ? Math.round(Math.max(0, Math.min(1, result.score)) * 100) : null;
   return (
     <div className="card">
       <div className="font-medium mb-2 flex items-center gap-2">
@@ -30,10 +46,26 @@ export function ResultCard({ result }: { result: Result | null }) {
         <span>Result</span>
       </div>
       <div className={`text-2xl font-semibold ${unknown ? "text-amber-700" : "text-emerald-700"}`}>{result.label}</div>
-      {result.title ? (
-        <div className="text-sm text-gray-700 mb-1">{result.title}</div>
+      <div className="mt-1">
+        {unknown ? (
+          <span className="badge badge-warning">No criminal case found</span>
+        ) : (
+          <span className="badge badge-success">Criminal record found</span>
+        )}
+      </div>
+      {title ? (
+        <div className="text-sm text-gray-700 mt-2">{title}</div>
       ) : null}
-      <div className="text-sm text-gray-600">Confidence: {result.confidence !== null ? result.confidence.toFixed(1) : "-"}</div>
+      {caseInfo ? <div className="text-sm text-gray-700">Case: {caseInfo}</div> : null}
+      {sex || age ? (
+        <div className="text-sm text-gray-700">{sex ? `Sex: ${sex}` : null}{sex && age ? " • " : null}{age ? `Age: ${age}` : null}</div>
+      ) : null}
+      {address ? <div className="text-sm text-gray-700">Address: {address}</div> : null}
+      {notes ? <div className="text-sm text-gray-700">Notes: {notes}</div> : null}
+      <div className="text-sm text-gray-600 mt-2">
+        Distance: {result.confidence !== null ? result.confidence.toFixed(1) : "-"}
+        {scorePct !== null ? <span className="ml-2">Match score: {scorePct}%</span> : null}
+      </div>
     </div>
   );
 }

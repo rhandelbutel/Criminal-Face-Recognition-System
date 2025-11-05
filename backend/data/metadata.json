@@ -1,5 +1,11 @@
 {
-  "Rhandell": "Robery",
-  "Denmark": "robery",
-  "Rhandel": "Robery"
+  "Denmark": {
+    "title": "robery"
+  },
+  "Test": {
+    "case": "Robbery",
+    "sex": "Male",
+    "age": "21",
+    "address": "Tuguegarao city"
+  }
 }

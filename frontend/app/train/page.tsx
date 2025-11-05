@@ -6,6 +6,11 @@ export default function TrainPage() {
   const [label, setLabel] = useState("");
   const [files, setFiles] = useState<FileList | null>(null);
   const [title, setTitle] = useState("");
+  const [caseInfo, setCaseInfo] = useState("");
+  const [sex, setSex] = useState("");
+  const [age, setAge] = useState("");
+  const [address, setAddress] = useState("");
+  const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [labels, setLabels] = useState<Record<string, number>>({});
@@ -35,6 +40,11 @@ export default function TrainPage() {
       fd.append("label", label.trim());
       Array.from(files).forEach((f) => fd.append("files", f));
       if (title.trim()) fd.append("title", title.trim());
+      if (caseInfo.trim()) fd.append("case", caseInfo.trim());
+      if (sex.trim()) fd.append("sex", sex.trim());
+      if (age.trim()) fd.append("age", age.trim());
+      if (address.trim()) fd.append("address", address.trim());
+      if (notes.trim()) fd.append("notes", notes.trim());
       const res = await apiMultipart("/api/train/upload", fd);
       setMessage(`Added ${res.added}, skipped ${res.skipped}. Model images: ${res.images_count}`);
       await refresh();
@@ -83,8 +93,34 @@ export default function TrainPage() {
             <input className="input" value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Juan_Dela_Cruz" />
           </div>
           <div>
-            <label className="label">Title / Case (optional)</label>
-            <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Criminal Case Found - Murder" />
+            <label className="label">Title (optional)</label>
+            <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Known Criminal Record" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label className="label">Case (optional)</label>
+              <input className="input" value={caseInfo} onChange={(e) => setCaseInfo(e.target.value)} placeholder="Robbery, Fraud, etc." />
+            </div>
+            <div>
+              <label className="label">Sex</label>
+              <select className="input" value={sex} onChange={(e) => setSex(e.target.value)}>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label className="label">Age (optional)</label>
+              <input className="input" value={age} onChange={(e) => setAge(e.target.value)} placeholder="e.g., 34" />
+            </div>
+            <div>
+              <label className="label">Address (optional)</label>
+              <input className="input" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="City, Country" />
+            </div>
+          </div>
+          <div>
+            <label className="label">Notes (optional)</label>
+            <textarea className="input" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Any additional identifying details" />
           </div>
           <div>
             <label className="label">Images (1–20)</label>

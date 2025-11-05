@@ -44,3 +44,4 @@ def resize_image(image: np.ndarray, size: Tuple[int, int]) -> np.ndarray:
 
 
 
+

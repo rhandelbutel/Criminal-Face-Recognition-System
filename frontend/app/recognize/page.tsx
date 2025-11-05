@@ -60,11 +60,27 @@ export default function RecognizePage() {
         <div className="font-medium mb-2 text-lg">Result</div>
         {result ? (
           <div>
-            <div className="text-xl font-semibold">{result.label}</div>
-            {result.title ? (
-              <div className="text-sm text-gray-700">{result.title}</div>
+            <div className={`text-xl font-semibold ${result.label === "Unknown" ? "text-amber-700" : "text-emerald-700"}`}>{result.label}</div>
+            <div className="mt-1">
+              {result.label === "Unknown" ? (
+                <span className="badge badge-warning">No criminal case found</span>
+              ) : (
+                <span className="badge badge-success">Criminal record found</span>
+              )}
+            </div>
+            {result?.metadata?.title || result?.title ? (
+              <div className="text-sm text-gray-700 mt-2">{result?.metadata?.title ?? result?.title}</div>
             ) : null}
-            <div className="text-sm text-gray-600">Confidence: {result.confidence !== null ? result.confidence.toFixed(1) : "-"}</div>
+            {result?.metadata?.case ? <div className="text-sm text-gray-700">Case: {result.metadata.case}</div> : null}
+            {(result?.metadata?.sex || result?.metadata?.age) ? (
+              <div className="text-sm text-gray-700">{result.metadata.sex ? `Sex: ${result.metadata.sex}` : null}{(result.metadata.sex && result.metadata.age) ? " • " : null}{result.metadata.age ? `Age: ${result.metadata.age}` : null}</div>
+            ) : null}
+            {result?.metadata?.address ? <div className="text-sm text-gray-700">Address: {result.metadata.address}</div> : null}
+            {result?.metadata?.notes ? <div className="text-sm text-gray-700">Notes: {result.metadata.notes}</div> : null}
+            <div className="text-sm text-gray-600 mt-2">
+              Distance: {result.confidence !== null ? result.confidence.toFixed(1) : "-"}
+              {typeof result.score === "number" ? <span className="ml-2">Match score: {Math.round(Math.max(0, Math.min(1, result.score)) * 100)}%</span> : null}
+            </div>
           </div>
         ) : (
           <div className="text-gray-500">No result yet</div>

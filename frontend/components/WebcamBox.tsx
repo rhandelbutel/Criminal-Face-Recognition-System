@@ -6,6 +6,7 @@ import { PlayCircleIcon, StopCircleIcon } from "@heroicons/react/24/solid";
 type InferResult = {
   label: string;
   confidence: number | null;
+  score?: number | null;
   bbox?: number[] | null;
 };
 
@@ -15,6 +16,9 @@ export function WebcamBox({ onResult }: { onResult: (r: InferResult | null) => v
   const [running, setRunning] = useState(false);
   const inFlightRef = useRef(false);
   const timerRef = useRef<number | null>(null);
+  const lastLabelRef = useRef<string | null>(null);
+  const stableCountRef = useRef<number>(0);
+  const lastConfidenceRef = useRef<number | null>(null);
 
   const start = useCallback(async () => {
     if (running) return;
@@ -63,7 +67,19 @@ export function WebcamBox({ onResult }: { onResult: (r: InferResult | null) => v
       inFlightRef.current = true;
       try {
         const result = await apiPost<InferResult>("/api/infer", { image: dataUrl });
-        onResult(result);
+        // Simple temporal smoothing: require two consecutive same labels for update
+        if (result && result.label) {
+          if (lastLabelRef.current === result.label) {
+            stableCountRef.current += 1;
+          } else {
+            stableCountRef.current = 1;
+            lastLabelRef.current = result.label;
+          }
+          lastConfidenceRef.current = typeof result.confidence === "number" ? result.confidence : lastConfidenceRef.current;
+        }
+        if (stableCountRef.current >= 2) {
+          onResult(result);
+        }
         // Draw bbox overlay
         ctx.strokeStyle = result.label === "Unknown" ? "#f59e0b" : "#10b981";
         ctx.lineWidth = 3;

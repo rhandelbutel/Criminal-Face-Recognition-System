@@ -18,8 +18,10 @@ _face_cascade = cv2.CascadeClassifier(_CASCADE_PATH)
 
 
 def detect_faces(gray_image) -> List[Tuple[int, int, int, int]]:
-    faces = _face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=5, minSize=(60, 60))
+    # Slightly stricter detector to reduce false positives
+    faces = _face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=7, minSize=(100, 100))
     return [(int(x), int(y), int(w), int(h)) for (x, y, w, h) in faces]
+
 
 
 

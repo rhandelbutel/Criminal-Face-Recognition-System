@@ -9,6 +9,29 @@
 .input { @apply border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500; }
 .label { @apply block text-sm font-medium text-gray-700 mb-1; }
 
+/* Background utilities */
+.bg-grid {
+  background-image:
+    radial-gradient(at 20% 20%, rgba(59,130,246,0.10) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(16,185,129,0.10) 0px, transparent 50%),
+    radial-gradient(at 0% 80%, rgba(99,102,241,0.10) 0px, transparent 50%),
+    linear-gradient(transparent 0, transparent 29px, rgba(0,0,0,0.04) 30px),
+    linear-gradient(90deg, transparent 0, transparent 29px, rgba(0,0,0,0.04) 30px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    30px 30px,
+    30px 30px;
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium;
+}
+.badge-success { @apply bg-emerald-100 text-emerald-700; }
+.badge-warning { @apply bg-amber-100 text-amber-700; }
+.muted { @apply text-gray-500; }
+
 
 
 

@@ -57,13 +57,34 @@ async def infer(body: dict):
 
 
 @app.post("/api/train/upload")
-async def train_upload(label: str = Form(...), files: List[UploadFile] = File(...), title: Optional[str] = Form(None)):
+async def train_upload(
+    label: str = Form(...),
+    files: List[UploadFile] = File(...),
+    title: Optional[str] = Form(None),
+    case: Optional[str] = Form(None),
+    sex: Optional[str] = Form(None),
+    gender: Optional[str] = Form(None),
+    age: Optional[str] = Form(None),
+    address: Optional[str] = Form(None),
+    notes: Optional[str] = Form(None),
+):
     if not label or not label.strip():
         raise HTTPException(status_code=400, detail="Label is required")
 
     processed, skipped = await recognizer_service.add_training_images_for_label(label.strip(), files)
-    if title is not None:
-        recognizer_service.set_label_title(label.strip(), title.strip())
+    # Store structured metadata (all optional)
+    recognizer_service.set_label_metadata(
+        label.strip(),
+        {
+            "title": (title.strip() if isinstance(title, str) else title),
+            "case": (case.strip() if isinstance(case, str) else case),
+            # Prefer 'sex' if provided, else fallback to legacy 'gender'
+            "sex": (sex.strip() if isinstance(sex, str) else (gender.strip() if isinstance(gender, str) else (sex or gender))),
+            "age": (age.strip() if isinstance(age, str) else age),
+            "address": (address.strip() if isinstance(address, str) else address),
+            "notes": (notes.strip() if isinstance(notes, str) else notes),
+        },
+    )
     # Retrain after adding
     labels_count, images_count = recognizer_service.rebuild_from_dataset()
     return {"added": processed, "skipped": skipped, "labels_count": labels_count, "images_count": images_count}
