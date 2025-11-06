@@ -2,10 +2,11 @@
   "Denmark": {
     "title": "robery"
   },
-  "Test": {
-    "case": "Robbery",
+  "test": {
+    "title": "test",
+    "case": "test",
     "sex": "Male",
-    "age": "21",
-    "address": "Tuguegarao city"
+    "age": "test",
+    "address": "test"
   }
 }

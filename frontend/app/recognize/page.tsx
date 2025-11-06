@@ -79,7 +79,7 @@ export default function RecognizePage() {
             {result?.metadata?.notes ? <div className="text-sm text-gray-700">Notes: {result.metadata.notes}</div> : null}
             <div className="text-sm text-gray-600 mt-2">
               Distance: {result.confidence !== null ? result.confidence.toFixed(1) : "-"}
-              {typeof result.score === "number" ? <span className="ml-2">Match score: {Math.round(Math.max(0, Math.min(1, result.score)) * 100)}%</span> : null}
+              {typeof result.score === "number" ? <span className="ml-2">Confidence: {Math.round(Math.max(0, Math.min(1, result.score)) * 100)}%</span> : null}
             </div>
           </div>
         ) : (

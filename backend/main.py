@@ -10,10 +10,7 @@ from cv.recognizer import FaceRecognizerService
 
 app = FastAPI(title="Criminal Face Recognition API", version="0.1.0")
 
-origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -36,6 +33,14 @@ async def health():
 async def get_labels():
     labels_counts = recognizer_service.get_labels_with_counts()
     return labels_counts
+
+
+@app.get("/api/labels/{label}/metadata")
+async def get_label_metadata(label: str):
+    metadata = recognizer_service.get_label_metadata(label)
+    if metadata is None:
+        raise HTTPException(status_code=404, detail="Label not found")
+    return metadata
 
 
 @app.post("/api/infer")

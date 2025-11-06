@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import shutil
 import stat
 from typing import Dict, List, Optional, Tuple, Any
@@ -275,6 +276,10 @@ class FaceRecognizerService:
         return labels_count, images_count
 
     async def add_training_images_for_label(self, label: str, files) -> Tuple[int, int]:
+        """
+        Save new images for a label without overwriting existing ones.
+        Continues the numeric sequence like image_0006.jpg → image_0007.jpg …
+        """
         label_dir = os.path.join(DATASET_DIR, label)
         ensure_dir(label_dir)
         processed = 0
@@ -285,7 +290,18 @@ class FaceRecognizerService:
             self.labels_to_ids[label] = self._next_label_id()
             self._save_labels(self.labels_to_ids)
 
-        idx = 0
+        # Find current max index (pattern: image_0000.jpg)
+        pattern = re.compile(r"^image_(\d{4})\.jpg$", re.IGNORECASE)
+        max_idx = -1
+        for fname in os.listdir(label_dir):
+            m = pattern.match(fname)
+            if m:
+                try:
+                    max_idx = max(max_idx, int(m.group(1)))
+                except ValueError:
+                    pass
+        idx = max_idx + 1
+
         for up in files:
             try:
                 data = await up.read()
@@ -303,15 +319,6 @@ class FaceRecognizerService:
                 cv2.imwrite(out_path, face)
                 processed += 1
                 idx += 1
-                # Simple augmentation: horizontal flip to improve robustness to expression/lighting
-                try:
-                    face_flip = cv2.flip(face, 1)
-                    out_path_flip = os.path.join(label_dir, f"image_{idx:04d}.jpg")
-                    cv2.imwrite(out_path_flip, face_flip)
-                    processed += 1
-                    idx += 1
-                except Exception:
-                    pass
             except Exception:
                 skipped += 1
         return processed, skipped
@@ -470,5 +477,3 @@ class FaceRecognizerService:
                     os.remove(MODEL_PATH)
 
         return {"removed": removed, "labels_count": labels_count, "images_count": images_count}
-
-

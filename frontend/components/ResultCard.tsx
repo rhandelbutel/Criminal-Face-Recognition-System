@@ -64,7 +64,7 @@ export function ResultCard({ result }: { result: Result | null }) {
       {notes ? <div className="text-sm text-gray-700">Notes: {notes}</div> : null}
       <div className="text-sm text-gray-600 mt-2">
         Distance: {result.confidence !== null ? result.confidence.toFixed(1) : "-"}
-        {scorePct !== null ? <span className="ml-2">Match score: {scorePct}%</span> : null}
+        {scorePct !== null ? <span className="ml-2">Confidence: {scorePct}%</span> : null}
       </div>
     </div>
   );

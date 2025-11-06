@@ -4,7 +4,7 @@
 node_modules/
 .next/
 .next/cache/
-out/
+.out/
 dist/
 *.log
 npm-debug.log*
@@ -12,21 +12,37 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 *.tsbuildinfo
-
-# If you build static export
-# out/
+.vercel/
+.turbo/
+.nyc_output/
 
 # ----------------------------
-# Python (backend)
+# Python (backend + any root-level)
 # ----------------------------
-backend/.venv/
-backend/__pycache__/
-backend/**/*.py[cod]
-*.pyc
+# Virtual environments (root or any package)
+.venv/
+venv/
+env/
+*/.venv/
+*/venv/
+*/env/
+
+# Byte-compiled / cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
 *.pyo
 *.pyd
+
+# Test/coverage
 .pytest_cache/
+.coverage*
 coverage/
+coverage.xml
+
+# Backend-specific
+backend/__pycache__/
+backend/**/*.py[cod]
 
 # ----------------------------
 # App runtime data (DON'T version trained data/models)
@@ -69,6 +85,6 @@ desktop.ini
 ~$*
 
 # ----------------------------
-# Docker (optional)
+# Docker 
 # ----------------------------
 *.pid
